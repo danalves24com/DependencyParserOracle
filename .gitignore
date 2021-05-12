@@ -1,0 +1,4 @@
+*.nnmodel
+*.txt
+/target
+.settings
