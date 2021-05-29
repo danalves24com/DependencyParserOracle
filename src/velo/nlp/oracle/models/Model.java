@@ -54,7 +54,7 @@ public class Model implements Serializable {
 	}
 
 	public void test() throws FileNotFoundException {
-		INDArray output = model.output(testingData.getFeatureMatrix());
+		INDArray output = model.output(testingData.getFeatures());
 		System.out.println(output);
 		Evaluation eval = new Evaluation(3);
 		eval.eval(testingData.getLabels(), output);
@@ -88,15 +88,15 @@ public class Model implements Serializable {
 	}
 
 	public static Model load(String path) {
-		if(new File(path).exists()) {
+		if (new File(path).exists()) {
 			try {
 				FileInputStream file = new FileInputStream(path);
 				ObjectInputStream in = new ObjectInputStream(file);
-				Object r = in.readObject();	
+				Object r = in.readObject();
 				System.out.println(r.toString());
 				in.close();
-	            file.close();
-	            return (Model)r;
+				file.close();
+				return (Model) r;
 			} catch (IOException | ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -105,9 +105,10 @@ public class Model implements Serializable {
 		}
 		return null;
 	}
+
 	public void snap() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream("oracle"+((int)(Math.random()*99999))+".nnmodel");
+			FileOutputStream fileOut = new FileOutputStream("oracle" + ((int) (Math.random() * 99999)) + ".nnmodel");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(this);
 			out.close();
@@ -119,8 +120,8 @@ public class Model implements Serializable {
 	}
 
 	public ResultVec pass(double[] params) {
-		INDArray output = this.model.output(new DataModel().VectorToDataSet(params).getFeatureMatrix());
-		double[] distro = new double[output.length()];
+		INDArray output = this.model.output(new DataModel().VectorToDataSet(params).getFeatures());
+		double[] distro = new double[(int) output.length()];
 		Integer i = 0;
 		for (OperationTypes type : OperationTypes.values()) {
 			distro[i] = output.getDouble(i);
