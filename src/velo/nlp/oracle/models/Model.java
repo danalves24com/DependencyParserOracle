@@ -1,11 +1,15 @@
 package velo.nlp.oracle.models;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Path;
 
 import org.deeplearning4j.eval.Evaluation;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
@@ -83,9 +87,27 @@ public class Model implements Serializable {
 		}
 	}
 
+	public static Model load(String path) {
+		if(new File(path).exists()) {
+			try {
+				FileInputStream file = new FileInputStream(path);
+				ObjectInputStream in = new ObjectInputStream(file);
+				Object r = in.readObject();	
+				System.out.println(r.toString());
+				in.close();
+	            file.close();
+	            return (Model)r;
+			} catch (IOException | ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return null;
+	}
 	public void snap() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream("oracle"+((int)Math.random()*100)+".nnmodel");
+			FileOutputStream fileOut = new FileOutputStream("oracle"+((int)(Math.random()*99999))+".nnmodel");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(this);
 			out.close();

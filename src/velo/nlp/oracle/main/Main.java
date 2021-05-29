@@ -9,8 +9,8 @@ import velo.nlp.oracle.models.Model;
 public class Main {
 	
 	
-	private final static String MODEL_VERSION =  "bety";
-	private final static Integer DATA_INDEX = 1, INPUT_SIZE = 10;
+	private final static String MODEL_VERSION =  "al";
+	private final static Integer DATA_INDEX = 2, INPUT_SIZE = 10;
 	
 	
 	public static void main(String[] args) {	
@@ -34,7 +34,8 @@ public class Main {
 				
 			}				
 			System.out.println("[oracle]\twaking");
-			Model model = new Model();		
+			System.out.println(args[1]);
+			Model model = Model.load(args[1]);		
 			model.buildNewMode(INPUT_SIZE, 2, OperationTypes.values().length);		
 			System.out.println("[oracle]\tthinking");
 			model.pass(vec).getResultType().write();
